@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   codeName: HIGHEST_STAGE_10
   icon: {fileID: 21300000, guid: e3123bceb272fdb4a88af6945c8aa195, type: 3}
-  displayName: "QA\uC120\uC0DD\uB2D8"
-  description: "10\uC2A4\uD14C\uC774\uC9C0 \uD074\uB9AC\uC5B4(\uACB0\uACFC\uCC3D
-    \uB610\uB294 \uC5C5\uC801\uD654\uBA74\uC744 \uC778\uC99D\uC0F7\uC5D0 \uCCA8\uBD80)"
+  displayName: "\uCE60\uC804\uD314\uAE30"
+  description: "\uC2A4\uD14C\uC774\uC9C0 10 \uD074\uB9AC\uC5B4"
   taskGroups:
   - tasks:
     - {fileID: 11400000, guid: 83d745b456feb914682cafb575904d11, type: 2}

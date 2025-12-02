@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SocialPlatforms.Impl;
-
+using Steamworks;
 public class AchievementSystem
 {
     #region Save Path
@@ -21,26 +21,7 @@ public class AchievementSystem
     public delegate void AchievementCanceledHandler(Achievement achievement);
     #endregion
 
-    //public static AchievementSystem instance;
     private static bool isApplicationQuitting;
-
-    //public static AchievementSystem Instance
-    //{
-    //    get
-    //    {
-    //        if (!isApplicationQuitting && instance == null)
-    //        {
-    //            instance = FindObjectOfType<AchievementSystem>();
-    //            if (instance == null)
-    //            {
-    //                instance = new GameObject("@AchievementSystem").AddComponent<AchievementSystem>();
-    //                DontDestroyOnLoad(instance.gameObject);
-    //            }
-    //        }
-    //        return instance;
-    //    }
-    //}
-
 
     private GameObject Prefab_AchievementAlarmTable { get; set; }
     public GameObject Prefab_CompleteAlarmUI { get; private set; }
@@ -226,6 +207,9 @@ public class AchievementSystem
     {
         var newAchievement = Register(achievement);
         newAchievement.LoadFrom(saveData);
+
+        if (newAchievement.State == AchievementState.WaitingForCompletion || newAchievement.State == AchievementState.Complete)
+            SteamAchievementBridge.UnlockAchievement(newAchievement.CodeName); // 로드 시, 스팀 도전과제 연동
     }
 
     private void LoadCompletedAchievement(AchievementSaveData saveData, Achievement achievement)
@@ -237,6 +221,8 @@ public class AchievementSystem
             completedAchievements.Add(newAchievement);
         else
             completedAchievements.Add(newAchievement);
+
+        SteamAchievementBridge.UnlockAchievement(newAchievement.CodeName); // 로드 시, 스팀 도전과제 연동
     }
 
     #region Callback
@@ -252,6 +238,8 @@ public class AchievementSystem
         DisplayCompleteAlarm(achievement);
 
         onAchievementIsReadyToComplete?.Invoke(achievement);
+
+        SteamAchievementBridge.UnlockAchievement(achievement.CodeName); // 업적이 사실상 완료조건을 달성한 시점이기에, Steam 도전과제도 함께 해제
     }
 
     private void OnAchievementCanceled(Achievement achievement)
